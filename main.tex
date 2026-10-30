@@ -62,6 +62,14 @@ The tables are short; click an ID for the explanation and source links.
 These checks compare EPOCH files and commit records. They are not
 new EPOCH runs.
 
+\section{Adding an entry}
+Add one short row to \code{registry.tex} or
+\code{improvements_registry.tex}, then add a matching entry to
+\code{items.tex} or \code{improvements.tex}. Use a subsection for a
+serious bug and smaller headings for the failure, fix and test.
+Record the official branch checked and the date when changing a flag.
+The copyable examples are in \code{CONTRIBUTING.md}.
+
 \section{Bugs}
 \subsection*{Bug list}
 Bug IDs are numbers. Keep each description short; the middle column
@@ -113,11 +121,5 @@ ID & Improvement & Available in & Credits\\
 
 \input{improvements.tex}
 
-\section{Adding an entry}
-Add one short row to \code{registry.tex} or
-\code{improvements_registry.tex}, then add a matching entry to
-\code{items.tex} or \code{improvements.tex}. Use a subsection for a
-serious bug and smaller headings for the failure, fix and test.
-Record the official branch checked and the date when changing a flag.
-The copyable examples are in \code{CONTRIBUTING.md}.
+
 \end{document}

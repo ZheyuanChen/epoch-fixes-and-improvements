@@ -17,8 +17,8 @@ generator is currently not committed to the fork; clean
 regeneration should be documented before proposing this
 for official EPOCH.
 
-\subsection*{I05. Fuller radiation-reaction model and time step}
-\phantomsection\label{imp:I05}
+\subsection*{I02. Fuller radiation-reaction model and time step}
+\phantomsection\label{imp:I02}
 The 2D fork adds optional terms of the full
 Landau--Lifshitz radiation-reaction force, another
 Gaunt-factor fit, and a midpoint time step for the
@@ -27,8 +27,8 @@ The old options remain the defaults. These additions
 are not in the checked official \code{main}; the
 audited fork branch has no equivalent 3D version.
 
-\subsection*{I06. Laser profiles and phases from data files}
-\phantomsection\label{imp:I06}
+\subsection*{I03. Laser profiles and phases from data files}
+\phantomsection\label{imp:I03}
 Zheyuan Chen's \href{https://github.com/ZheyuanChen/epoch_dev}{fork}
 can read a laser's spatial or time-dependent profile from a data
 file in 2D and 3D (\forkcommit{438424c31}). The laser block accepts
@@ -40,8 +40,8 @@ checked official \code{main}. A portable example should supply
 the data file, its format and grid convention, and a reference
 field trace; a multi-rank test should also check file loading.
 
-\subsection*{I07. Spin and photon polarisation}
-\phantomsection\label{imp:I07}
+\subsection*{I04. Spin and photon polarisation}
+\phantomsection\label{imp:I04}
 The fork's \href{https://github.com/ZheyuanChen/epoch_dev/tree/spin}{\code{spin}}
 branch adds particle spin and photon polarisation tracking,
 with spin-dependent strong-field QED processes in 2D. Zheyuan
