@@ -16,7 +16,7 @@
 \setlength{\parskip}{2pt}
 \newcommand{\code}[1]{\texttt{\detokenize{#1}}}
 \newcommand{\upcommit}[1]{\href{https://github.com/epochpic/epoch/commit/#1}{\texttt{#1}}}
-\newcommand{\forkcommit}[1]{\href{https://github.com/ZheyuanChen/epoch_dev/commit/#1}{\texttt{#1}}}
+\newcommand{\forkcommit}[2]{\href{#1/commit/#2}{\texttt{#2}}}
 \newcommand{\pr}[1]{\href{https://github.com/epochpic/epoch/pull/#1}{PR~\##1}}
 \newcommand{\issue}[1]{\href{https://github.com/epochpic/epoch/issues/#1}{issue~\##1}}
 % Short coloured flags; the official development branch name is an argument.
@@ -24,11 +24,11 @@
   \colorbox{#1}{\textcolor{#2}{\strut\bfseries #3}}\endgroup}
 \newcommand{\FixMain}{\Badge{green!15}{green!40!black}{Fix: main}}
 \newcommand{\FixDevel}[1]{\Badge{yellow!35}{orange!55!black}{Fix: #1}}
-\newcommand{\FixFork}{\href{https://github.com/ZheyuanChen/epoch_dev}{\Badge{purple!14}{purple!65!black}{Fix: fork}}}
+\newcommand{\FixFork}[1]{\href{#1}{\Badge{purple!14}{purple!65!black}{Fix: fork}}}
 \newcommand{\NoFix}{\Badge{red!14}{red!65!black}{Not fixed}}
 \newcommand{\InMain}{\Badge{green!15}{green!40!black}{Main}}
 \newcommand{\InDevel}[1]{\Badge{yellow!35}{orange!55!black}{#1}}
-\newcommand{\InFork}{\href{https://github.com/ZheyuanChen/epoch_dev}{\Badge{purple!14}{purple!65!black}{Fork}}}
+\newcommand{\InFork}[1]{\href{#1}{\Badge{purple!14}{purple!65!black}{Fork}}}
 \newcommand{\NotAvailable}{\Badge{red!14}{red!65!black}{Not available}}
 % The number or I-ID links to its detailed entry.
 \newcommand{\BugRow}[4]{\hyperref[bug:#1]{\textbf{#1}} & #2 & #3 & #4\\}
@@ -48,14 +48,16 @@ in official EPOCH, including ones fixed only in a fork; defects in
 fork-only features are excluded. For bugs, the colour shows
 where a fix is available: \FixMain\ in official \code{main},
 \FixDevel{4.20-devel}\ in an official development branch,
-\FixFork\ in a separate copy of EPOCH, or \NoFix\ if no fix is known.
+\FixFork{https://github.com/ZheyuanChen/epoch_dev}\ in a separate copy
+of EPOCH, or \NoFix\ if no fix is known.
 The yellow flag can name any official development branch. A purple
 flag does not mean the fix has reached official EPOCH. Click a purple
-flag to open the linked fork. Credits name the authors of the cited
-fix or improvement; a shared entry may name more than one author.
+flag to open the fork or branch named by that row. Credits recognise
+contributors; the detailed entries attribute particular fixes.
 
 For improvements, the colour shows where the improvement is available:
-\InMain, \InDevel{4.20-devel}, \InFork, or \NotAvailable.
+\InMain, \InDevel{4.20-devel},
+\InFork{https://github.com/ZheyuanChen/epoch_dev}, or \NotAvailable.
 The branch checked for this edition of the register is
 \href{https://github.com/epochpic/epoch/commit/f294c484f76dff0777d5cc0d50b38506a2b049ff}{\texttt{f294c484f}}.
 The tables are short; click an ID for the explanation and source links.

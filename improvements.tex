@@ -7,8 +7,8 @@ analytical rate in \code{pairprod.table}. The 2D
 \href{https://github.com/ZheyuanChen/epoch_dev}{fork} adds a
 numerical table for the locally constant field approximation
 (LCFA), \code{pairprod_lcfa.table}
-(\forkcommit{848d21a4b}), selected through
-\code{pair_tables = lcfa} (\forkcommit{fd56a2e08}).
+(\forkcommit{https://github.com/ZheyuanChen/epoch_dev}{848d21a4b}), selected through
+\code{pair_tables = lcfa} (\forkcommit{https://github.com/ZheyuanChen/epoch_dev}{fd56a2e08}).
 The old method remains available as \code{legacy}.
 This is an improvement candidate, not a claim that the old
 method is a coding error. It can change simulation results,
@@ -22,7 +22,7 @@ for official EPOCH.
 The 2D fork adds optional terms of the full
 Landau--Lifshitz radiation-reaction force, another
 Gaunt-factor fit, and a midpoint time step for the
-radiation-reaction force (\forkcommit{dfa48930a}).
+radiation-reaction force (\forkcommit{https://github.com/ZheyuanChen/epoch_dev}{dfa48930a}).
 The old options remain the defaults. These additions
 are not in the checked official \code{main}; the
 audited fork branch has no equivalent 3D version.
@@ -31,7 +31,7 @@ audited fork branch has no equivalent 3D version.
 \phantomsection\label{imp:I03}
 Zheyuan Chen's \href{https://github.com/ZheyuanChen/epoch_dev}{fork}
 can read a laser's spatial or time-dependent profile from a data
-file in 2D and 3D (\forkcommit{438424c31}). The laser block accepts
+file in 2D and 3D (\forkcommit{https://github.com/ZheyuanChen/epoch_dev}{438424c31}). The laser block accepts
 \code{use_custom_profile} and \code{profile_data_file}; the
 file-based phase option uses \code{use_phase_from_file} and
 \code{phase_data_file}. The implementation also supports separate
@@ -46,9 +46,9 @@ The fork's \href{https://github.com/ZheyuanChen/epoch_dev/tree/spin}{\code{spin}
 branch adds particle spin and photon polarisation tracking,
 with spin-dependent strong-field QED processes in 2D. Zheyuan
 Chen began this work by adapting Holger Schmitz's spin-precession
-code (\forkcommit{ea37e1a6d}); subsequent fork work adds
+code (\forkcommit{https://github.com/ZheyuanChen/epoch_dev}{ea37e1a6d}); subsequent fork work adds
 spin-dependent emission and pair production
-(\forkcommit{773c614c3}, \forkcommit{2b18ef6b4}).
+(\forkcommit{https://github.com/ZheyuanChen/epoch_dev}{773c614c3}, \forkcommit{https://github.com/ZheyuanChen/epoch_dev}{2b18ef6b4}).
 The checked official \code{main} has no equivalent spin model.
 The 3D spin/QED port in the fork should be treated as
 experimental until its validation is documented. This entry

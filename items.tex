@@ -27,7 +27,10 @@ needed to make. Other ranks would wait indefinitely.
 \pr{906} merged \upcommit{241d6fb9c} into the official
 \code{4.20-devel} branch on 1 June 2026, in all three dimensions.
 It is not in the official \code{main} version checked for this
-document. A later 2D fork commit, \forkcommit{3e4734522}, made by Zheyuan who didn't know the fix's already existed in the devel branch, also changes this path but includes a separate ID fix (bug 4).
+document. Zheyuan Chen made the later 2D fork commit
+\forkcommit{https://github.com/ZheyuanChen/epoch_dev}{3e4734522}
+without knowing the fix was already in the official development
+branch. That commit also includes a separate ID fix (bug 4).
 
 \subsubsection*{Test to keep}
 Run with at least two MPI ranks, a photon probe, and one rank
@@ -40,7 +43,7 @@ remain unique. One rank cannot expose this deadlock.
 assigned ID was not always carried through restart or particle
 loading from a file. New particles could then reuse an old ID.
 
-\textbf{Fix and status.} \forkcommit{3e4734522} saves and raises
+\textbf{Fix and status.} \forkcommit{https://github.com/ZheyuanChen/epoch_dev}{3e4734522} saves and raises
 the ID counter in the fork. The checked official \code{main}
 does not contain those changes. The fork fix is 2D only.
 A regression test should check IDs after particles leave the
@@ -60,7 +63,7 @@ Zheyuan Chen's fix \upcommit{2684956bf} changes the calculation in
 1D, 2D and 3D. Tom Goffrey merged it into official
 \code{4.21-devel} through \pr{925} on 6 October 2026
 (merge \upcommit{2b55e10cf}). The same correction was also made in
-the fork as \forkcommit{d86ceceab}. It is absent from the checked
+the fork as \forkcommit{https://github.com/ZheyuanChen/epoch_dev}{d86ceceab}. It is absent from the checked
 official \code{main}. A useful test is a
 single particle in crossed fields, compared with an independent
 trajectory, for several particle shapes. This document checks
@@ -75,7 +78,7 @@ still try to create a trident pair. If no pair species was set,
 this could use species index \code{-1} and crash.
 
 \subsubsection*{Fix and test}
-The fork commit \forkcommit{1a88d4afa} checks
+The fork commit \forkcommit{https://github.com/ZheyuanChen/epoch_dev}{1a88d4afa} checks
 \code{produce_pairs} before changing the trident event counter
 and before creating a pair, in all three dimensions.
 The checked official \code{main} still has the unguarded path.
@@ -87,7 +90,7 @@ confirm that the run completes without creating a pair.
 In an EPOCH species block, \code{identify} can replace an
 explicit \code{charge} or \code{mass} without warning. A deck
 may then run with different particle properties than its
-author expected. The fork commit \forkcommit{b908c8591}
+author expected. The fork commit \forkcommit{https://github.com/ZheyuanChen/epoch_dev}{b908c8591}
 adds a warning in all three dimensions. It does not change
 which properties EPOCH uses. The warning is absent from the
 checked official \code{main}. Tests should cover both input

@@ -18,8 +18,8 @@ edits. This GitHub repository is public.
 To add a bug, add one short `\BugRow` to `registry.tex` and a matching
 numbered entry to `items.tex`. To add an improvement, add an
 `\ImprovementRow` to `improvements_registry.tex` and a matching `I01`
-entry to `improvements.tex`. The tables credit the authors of the cited
-fix or addition. Descriptions wrap automatically;
+entry to `improvements.tex`. The tables credit contributors, and each
+fork flag links to the fork or branch named in that row. Descriptions wrap automatically;
 keep long paths, links and tests in the detailed entries.
 See [CONTRIBUTING.md](CONTRIBUTING.md) for examples.
 
@@ -27,7 +27,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for examples.
 
 - Green: fix or improvement is in official `main`.
 - Yellow: fix or improvement is in the named official development branch.
-- Purple: fix or improvement is in the linked `epoch_dev` fork.
+- Purple: fix or improvement is in the fork or branch linked from that row.
 - Red: no fix is known, or an improvement is unavailable.
 - Official `main` checked 30 October 2026 at
   `f294c484f76dff0777d5cc0d50b38506a2b049ff`.
