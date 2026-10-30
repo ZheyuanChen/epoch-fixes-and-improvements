@@ -1,32 +1,43 @@
-# EPOCH fixes and incremental improvements
+# EPOCH issue and improvement register
 
-This standalone public repository contains an editable status register and
-its Overleaf package. Source-commit links point to the separate EPOCH fork
-for provenance; this repository has its own history.
+A community-editable register of bugs and incremental numerical improvements in
+[official EPOCH](https://github.com/epochpic/epoch). The official `main` branch
+is the reference point. Changes that exist only in
+[`epoch_dev`](https://github.com/ZheyuanChen/epoch_dev) are labelled explicitly.
 
-Upload `epoch_fixes_overleaf.zip` to Overleaf as a new project, then set
-`main.tex` as the main file if Overleaf does not select it automatically.
-The source uses pdfLaTeX and standard TeX Live packages. The separate
-`epoch_fixes_preview.pdf` is a locally compiled preview, not required by
-Overleaf.
+## Work on Overleaf
 
-## Scope and status method
+Upload [`epoch_fixes_overleaf.zip`](epoch_fixes_overleaf.zip) as a new Overleaf
+project and set `main.tex` as the main file. The archive contains the registry,
+detailed items and editing guide. Sharing that Overleaf project does not grant
+GitHub write access or automatically synchronise edits with this repository.
+The GitHub repository itself is public.
 
-- Checked on 30 October 2026 against official `epochpic/epoch` `main`
-  `f294c484f76dff0777d5cc0d50b38506a2b049ff` and fork `spin`
-  `b908c85911b314f6e07ed9a31caf0396612ffd83`.
-- Verified the remote heads with `git ls-remote upstream refs/heads/main
-  refs/heads/4.20-devel refs/heads/4.21-devel`.
-- Used `git merge-base --is-ancestor <commit> upstream/main` for the
-  official merge and inspected the named source, table or switch for
-  fork-only corrections. A matching function name alone is not proof
-  that the fix is equivalent.
-- Official `4.20-devel` includes PR #906, but official `main` does not.
-  Official `main` includes PR #896 through release v4.20.1.
-- The register does not claim a fresh EPOCH build or simulation. Local
-  uncommitted tests and table generator scripts are not part of this
-  package; the generator scripts need committing for reproducibility.
+To add a bug, edit one short row in `registry.tex` and a matching entry in
+`items.tex`. The table keeps descriptions brief and wraps them automatically;
+long paths, links, reproduction steps and caveats belong in the detailed item.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for a copyable example.
 
-The package contains no manuscript material or machine-specific notes.
-Update the date, branch tips, and individual status entries together
-when refreshing it.
+## Snapshot and evidence
+
+- Official `main` checked 30 October 2026:
+  `f294c484f76dff0777d5cc0d50b38506a2b049ff`.
+- `Fixed` requires inclusion in official `main`. A PR merged into a development
+  branch is `Dev only` until its fix reaches `main`.
+- `Open` describes a stock-code issue that remains at the checked tip.
+- `Baseline` describes an existing method with a documented alternative;
+  `N/A` identifies a correction to a feature absent from stock EPOCH.
+- This source audit does not claim new EPOCH builds or simulations. Table
+  generators currently untracked in the local fork are flagged in the item.
+
+## Files
+
+- `main.tex`: layout, status convention and registry macros.
+- `registry.tex`: short, linked rows; the easiest file for contributors to edit.
+- `items.tex`: sources, symptoms, fixes, tests and limitations.
+- `CONTRIBUTING.md`: editing and status-update instructions.
+- `package.py`: regenerates the Overleaf zip from these sources.
+- `epoch_fixes_preview.pdf`: a compiled preview.
+
+Run `python3 package.py` after editing the source files. The Overleaf zip
+contains no Git history, EPOCH source code, manuscripts or local machine notes.

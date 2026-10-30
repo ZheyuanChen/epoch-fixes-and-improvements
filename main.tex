@@ -2,119 +2,85 @@
 \usepackage[margin=22mm]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage{lmodern}
-\usepackage{microtype}
+\usepackage{lmodern,microtype}
 \usepackage{booktabs,longtable,array}
-\usepackage{enumitem}
 \usepackage{xcolor}
 \usepackage{hyperref}
-\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,pdftitle={EPOCH bug fixes and incremental improvements}}
-\setlist[itemize]{leftmargin=*,topsep=3pt,itemsep=2pt}
-\setlength{\parskip}{4pt}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!45!black,
+  urlcolor=blue!45!black,
+  pdftitle={EPOCH issue and improvement register}
+}
 \setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
 \newcommand{\code}[1]{\texttt{\detokenize{#1}}}
-\newcommand{\fork}[1]{\href{https://github.com/ZheyuanChen/epoch_dev/commit/#1}{\texttt{#1}}}
-\newcommand{\official}[1]{\href{https://github.com/epochpic/epoch/commit/#1}{\texttt{#1}}}
+\newcommand{\upcommit}[1]{\href{https://github.com/epochpic/epoch/commit/#1}{\texttt{#1}}}
+\newcommand{\forkcommit}[1]{\href{https://github.com/ZheyuanChen/epoch_dev/commit/#1}{\texttt{#1}}}
 \newcommand{\pr}[1]{\href{https://github.com/epochpic/epoch/pull/#1}{PR~\##1}}
 \newcommand{\issue}[1]{\href{https://github.com/epochpic/epoch/issues/#1}{issue~\##1}}
-\newcommand{\yes}{\textcolor{green!40!black}{\textbf{Yes}}}
-\newcommand{\no}{\textcolor{red!65!black}{\textbf{No}}}
-\title{EPOCH bug fixes and incremental improvements\\\large Fork-to-upstream status register}
-\author{Zheyuan Chen}
-\date{Status checked 30 October 2026}
+% Add one short row in registry.tex, then a matching label in items.tex.
+\newcommand{\RegistryRow}[3]{\hyperref[item:#1]{\textbf{#1}} & #2 & #3\\}
+\newcommand{\ForkItem}[2]{\par\medskip\phantomsection\label{item:#1}\textbf{#1: #2.}\quad}
+\title{EPOCH issue and improvement register}
+\author{Contributors to this register}
+\date{Official \code{main} status checked 30 October 2026}
 \begin{document}
 \maketitle
 
-\begin{abstract}
-This register identifies selected bug fixes and modest numerical or usability improvements in \href{https://github.com/ZheyuanChen/epoch_dev}{\code{epoch_dev}}, and asks a precise question for each: is the correction present in the official \href{https://github.com/epochpic/epoch}{EPOCH} \code{main} branch? It includes the laser absorption diagnostic fix merged through \pr{896} and the exact nonlinear Breit--Wheeler (NBW) rate tables in the fork. It is an inventory of source changes, not a claim that all fork features have been proposed upstream.
-\end{abstract}
+\section{Purpose and status convention}
+This is a shared register of EPOCH bugs and incremental improvements. It starts
+with the official \href{https://github.com/epochpic/epoch}{EPOCH} source and
+records whether each change is in official \code{main}. An implementation in
+\href{https://github.com/ZheyuanChen/epoch_dev}{a separate fork} is identified
+explicitly; it does not by itself make an upstream issue fixed. The register
+is selective, and contributors are welcome to add independently verified
+issues from any part of EPOCH.
 
-\section{How status was checked}
+The official \code{main} tip checked here is
+\upcommit{f294c484f76dff0777d5cc0d50b38506a2b049ff}. The statuses mean:
+\textbf{Fixed}---the correction is in that \code{main} history;
+\textbf{Dev only}---it is in an official development branch but not
+\code{main}; \textbf{Open}---the stated stock-code behaviour remains in
+\code{main}; \textbf{Baseline}---an existing method works as designed but
+has a documented alternative; \textbf{N/A}---the affected feature exists
+only in the fork, so this is not a stock EPOCH bug. Statuses are source
+assessments at the stated commit, not fresh simulation results.
 
-The official \code{main} tip was \official{f294c484f76dff0777d5cc0d50b38506a2b049ff} on 30 October 2026 (\code{git ls-remote} against \code{epochpic/epoch}). The audited fork tip was \fork{b908c85911b314f6e07ed9a31caf0396612ffd83} on \code{spin}. ``Yes'' means the upstream merge commit is an ancestor of official \code{main}. ``No'' means the relevant fork commit is not an ancestor and the named table, switch, guard, or algorithm is absent from the official \code{main} source at that tip. A merge into \code{4.20-devel} alone is \emph{not} counted as present in \code{main}. Other official development branches are mentioned only where their status was separately checked.
+\section{Registry}
+The linked ID opens the detailed entry. E IDs describe stock EPOCH; F IDs
+mark fork-only features. To add an item, copy one
+\code{\RegistryRow} line in \code{registry.tex} and add a matching labelled
+entry in \code{items.tex}; the title column wraps automatically.
 
-The scope is substantive source fixes and small improvements visible in the fork history. Major new physics packages and uncommitted prototype code are outside this register. Dimensions refer to the implementation at the cited fork commit; they do not imply equivalent support in the other dimensions. These are source and history checks, not fresh EPOCH simulation results.
-
-\small
+{\small
 \setlength{\tabcolsep}{4pt}
-\begin{longtable}{@{}p{0.20\linewidth}p{0.48\linewidth}p{0.18\linewidth}p{0.07\linewidth}@{}}
-\caption{Selected changes and official \code{main} status. ``2D'' means \code{epoch2d}; ``all'' means 1D, 2D and 3D.}\label{tab:status}\\
+\renewcommand{\arraystretch}{1.12}
+\begin{longtable}{@{}p{0.08\linewidth}>{\raggedright\arraybackslash}p{0.72\linewidth}p{0.13\linewidth}@{}}
 \toprule
-Change & Location and correction & Evidence & Main \\
+ID & Short description & Main status\\
 \midrule
 \endfirsthead
 \toprule
-Change & Location and correction & Evidence & Main \\
+ID & Short description & Main status\\
 \midrule
 \endhead
 \bottomrule
 \endfoot
-Laser absorption diagnostic & \code{epoch{1,2,3}d/src/laser.f90}: correct injected-energy sign at maximum boundaries. & \official{0984b1d31}; \pr{896} & \yes \\
-Photon-probe ID deadlock & Official all-dimension collective call fix reached \code{4.20-devel}; fork also repairs its 2D photon path. & \official{241d6fb9c}; \fork{3e4734522} & \no \\
-Particle ID lifetime & 2D: retain the maximum ID through restart and file loading; prevent reuse. & \fork{3e4734522} & \no \\
-Higuera--Cary pusher & All: use the correctly normalised magnetic rotation coefficient for interpolated fields. & \fork{d86ceceab} & \no \\
-Trident guard & All: obey \code{produce_pairs = F} in the trident optical-depth/event path. & \fork{1a88d4afa} & \no \\
-NBW photon species & 2D \code{photons.F90}: pass the active photon species to pair generation. & \fork{2b18ef6b4} & \no \\
-\code{identify} warning & All species deck parsers: warn when \code{identify} replaces explicit charge or mass. & \fork{b908c8591} & \no \\
-Spin restart & 2D \code{setup.F90}: restore spin state on restart. & \fork{a66b394cb} & \no \\
-Pair-channel boosting & All: repair Breit--Wheeler boost handling, muon sampling, Bethe--Heitler scaling and additive optical depths. & \fork{3e9f3121f}; \fork{99ce3c685} & \no \\
-Exact NBW rate table & 2D \code{TABLES/pairprod_lcfa.table}, selected by \code{pair_tables = lcfa}. & \fork{848d21a4b}; \fork{fd56a2e08} & \no \\
-NBW energy split & 2D polarisation-resolved pair energy tables and sampling. & \fork{dfb93b141}; \fork{2b18ef6b4} & \no \\
-NLCS quantile sampling & 2D spin-resolved inverse-CDF tables selected by \code{use_nlcs_quantile_tables}. & \fork{6610b3768} & \no \\
-No-transition update & 2D sub-step spin/polarisation update around QED emission. & \fork{944fff881} & \no \\
-Radiation reaction & 2D full Landau--Lifshitz terms, alternative Gaunt fit and midpoint kick. & \fork{dfa48930a} & \no \\
-Laser half-cell sampling & 2D custom profile sampling coordinates corrected. & \fork{1b307b37d} & \no \\
-Laser loading deadlock & 2D MPI profile and phase-file load made collective-safe. & \fork{5a77c367b} & \no \\
-Per-laser file storage & 2D: distinct laser blocks retain distinct imported profiles. & \fork{945fd060d} & \no \\
-3D profile re-slabbing & 3D: reload the spatiotemporal window as domain slabs move. & \fork{f572d035c} & \no \\
+\input{registry.tex}
 \end{longtable}
-\normalsize
+}
 
-\section{Two upstream merges that require different labels}
+\input{items.tex}
 
-\paragraph{Laser absorption, already on \code{main}.}
-Tom Goffrey merged \pr{896} into \code{4.20-devel} on 10 April 2026 as \official{0984b1d31}. The patch corrects the sign of injected energy at \code{x_max}, \code{y_max} and \code{z_max}; the previous negative energy could give a zero absorption coefficient (\issue{893}). The merge is an ancestor of official \code{main} and is listed in the \href{https://github.com/epochpic/epoch/releases/tag/v4.20.1}{v4.20.1 release notes}. No fork-only fix remains to upstream for this item.
-
-\paragraph{Photon-probe IDs, merged to development but absent from \code{main}.}
-\pr{906} merged \official{241d6fb9c} into \code{4.20-devel} on 1 June 2026, after the current official \code{main} tip. In the fork, \fork{3e4734522} moves the 2D photon ID collective call ahead of the empty-rank return and additionally fixes ID counter persistence across restarts and file-based particle loading. The official PR and the fork commit are related but \emph{not equivalent in scope}; the latter's restart/file-ID changes should be reviewed separately.
-
-\section{Numerical and QED improvements in the fork}
-
-\paragraph{NBW tables.}
-Official \code{main} reads \code{pairprod.table}; the 2D fork adds \code{pairprod_lcfa.table} and the \code{pair_tables = legacy | lcfa} selector. The legacy rate uses Erber's approximate analytic expression; \code{lcfa} selects a numerically tabulated locally constant field approximation (LCFA) rate. The fork also provides parallel/perpendicular NBW energy-split tables. With spin QED off, \code{legacy} keeps the old rate and \code{energy_split.table}, while \code{lcfa} selects the LCFA rate and unpolarised split. With spin QED on, \code{lcfa} is the default, and \code{legacy} restores only the old rate; the spin-resolved split remains. This changes physics results, so published runs should record the selector and table hashes. The generator scripts for these tables are currently untracked in the local source tree; the committed tables and reader are present, but clean-checkout regeneration has not been demonstrated here.
-
-\paragraph{NLCS sampling and time stepping.}
-The 2D fork adds spin-resolved NLCS quantile tables and a switch to use the previous lookup. It also adds a sub-step no-transition update. Neither is part of official \code{main}; these affect spin-aware QED paths and should not be described as global corrections to every EPOCH emission mode. The legacy \code{ksi_sokolov.table} remains relevant to spin-off runs.
-
-\paragraph{Radiation reaction.}
-The 2D fork's \code{use_full_landau_lifshitz}, \code{gaunt_factor} and \code{rr_midpoint} options supplement EPOCH's original reduced force and explicit kick. Defaults preserve the old branch behaviour; enabling these options changes the physical model or time integration. There is no 3D implementation of this fork change in the audited \code{spin} branch.
-
-\section{Correctness fixes and operational limits}
-
-The Higuera--Cary correction is in all three fork dimensions and in a separate fork branch based on \code{4.21-devel} (\fork{2684956bf}); it is absent from official \code{main}. The fork also guards trident pair creation when pair production is disabled, fixes a multi-photon-species NBW argument in 2D, restores 2D spin state on restart and warns about explicit charge/mass values replaced by \code{identify}. These items should be considered independently of the larger spin and pair-boost features.
-
-The pair-boost group in Table~\ref{tab:status} spans distinct corrections: Breit--Wheeler boost handling (\fork{3e9f3121f}), muon gamma sampling (\fork{fbb9a9459}), Bethe--Heitler scaling in 3D and then 1D/2D (\fork{92552de69}, \fork{a5716caf2}), and additive optical depths (\fork{99ce3c685}). The table's single row is a tracking convenience, not one patch to cherry-pick.
-
-The custom laser reader has several fork-local corrections: half-cell sampling, MPI-safe file loading, independent storage per laser block and continuous 3D re-slabbing. Official \code{main} does not contain the custom-file reader, so these are improvements to a fork feature rather than regressions of stock EPOCH. The upstream \href{https://github.com/epochpic/epoch/issues/910}{custom-profile issue \#910} was open at the check date; an issue is not an upstream merge.
-
-\section{Maintaining this register}
-
-For each future entry, record the symptom, affected dimensions, fork commit, official PR or issue (if any), \code{main} tip checked, an implementation-level test, and whether the change affects numerical results. Refresh the upstream status after each official release or merge; do not infer \code{main} inclusion from a development-branch PR badge. The command-level method and known limitations are in the accompanying \code{README.md}.
-
-\section{Template for the next entry}
-
-\begin{tabular}{@{}p{0.27\linewidth}p{0.67\linewidth}@{}}
-\toprule
-Field & Record \\
-\midrule
-Symptom and trigger & What fails, in which dimension and build configuration? \\
-Fork change & Commit, source paths, and whether defaults or numerical results change. \\
-Validation & Smallest reproducer; compiler, ranks, and quantitative acceptance check. \\
-Official status & PR/issue, development branch if applicable, \code{main} tip and check date. \\
-Remaining limit & Missing tests, uncommitted generators, or dimensional ports. \\
-\bottomrule
-\end{tabular}
-
-Immediate refresh targets are the promotion of \pr{906} to \code{main}, a clean-checkout regeneration of the NBW tables, and upstream review of the isolated Higuera--Cary and trident guards. Record a new status date whenever any of these changes.
-
+\section{Adding and updating entries}
+Use the short table row for discovery, and keep reproduction steps, source
+paths, links, affected dimensions and validation in the corresponding
+detailed item. For a serious defect, use a \code{\subsection} and, if useful,
+\code{\subsubsection} headings. Give fork-specific additions an F ID and
+state which feature is absent from stock EPOCH. Do not mark an item
+\textbf{Fixed} merely because a PR was merged to a development branch.
+Record the official \code{main} commit and check date whenever a status
+changes. A copyable example and the build instructions are in
+\code{CONTRIBUTING.md}.
 \end{document}

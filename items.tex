@@ -1,0 +1,212 @@
+\section{Stock EPOCH: fixes already in \code{main}}
+
+\subsection{E01: Laser absorption diagnostic at maximum boundaries}
+\label{item:E01}
+\textbf{Failure.} Energy injected at \code{x_max}, \code{y_max} or
+\code{z_max} was recorded with the wrong sign, which could yield a zero
+absorption coefficient. The change touches \code{laser.f90} in all three
+dimensions.
+
+\textbf{Upstream status.} Tom Goffrey merged \pr{896} into
+\code{4.20-devel} on 10 April 2026 as \upcommit{0984b1d31}; that merge is
+an ancestor of the checked official \code{main} tip. The
+\href{https://github.com/epochpic/epoch/releases/tag/v4.20.1}{v4.20.1
+release notes} list this fix (\issue{893}). The present register does not
+repeat the upstream test suite.
+
+\subsection{E02: 2D linear Breit--Wheeler species selection}
+\label{item:E02}
+\textbf{Failure and status.} A typo in the 2D linear Breit--Wheeler
+routine selected the wrong species. \pr{892} merged
+\upcommit{ba04ae645} into \code{4.20-devel} on 26 March 2026; it is an
+ancestor of official \code{main} and is listed in v4.20.1
+(\issue{891}). This is a separate process from the nonlinear
+Breit--Wheeler issues below.
+
+\section{Stock EPOCH: development-only or open items}
+
+\subsection{E03: Photon-probe particle-ID deadlock}
+\label{item:E03}
+\subsubsection{Trigger and failure}
+With photon probes and \code{PARTICLE_ID} or \code{PARTICLE_ID4}, a rank
+with no local photons could return before the collective ID-generation
+call. Other ranks entered it and waited indefinitely.
+
+\subsubsection{Official and fork status}
+\pr{906} merged \upcommit{241d6fb9c} into official
+\code{4.20-devel} on 1 June 2026, in all three dimensions. That commit
+is not an ancestor of the checked \code{main} tip. The later 2D fork
+commit \forkcommit{3e4734522} also fixes the photon path and includes
+the distinct ID-lifetime work in E04. Do not treat the two commits as
+equivalent in scope.
+
+\subsubsection{Verification to record}
+A regression test should use at least two MPI ranks, a photon probe
+and a rank without local photons; the run must complete and IDs must
+be unique. A successful single-rank run cannot test this collective
+failure.
+
+\subsection{E04: Particle-ID reuse across restart and file loading}
+\label{item:E04}
+\textbf{Failure.} In the 2D fork investigation, the maximum assigned
+ID was not reliably carried through restart and particles loaded from
+file; newly created particles could reuse existing IDs. The main
+source at the checked tip does not contain the counter persistence
+and raising logic of \forkcommit{3e4734522}. This is separate from the
+photon-probe deadlock in E03.
+
+\textbf{Evidence and limit.} The fork commit changes
+\code{epoch2d/src/housekeeping/setup.F90},
+\code{partlist.F90} and related paths. A portable reproducer should
+check uniqueness after particles leave the domain, after restart with
+a changed MPI decomposition, and after both automatic and supplied
+file IDs. The registered correction is 2D only.
+
+\subsection{E05: Higuera--Cary field normalisation}
+\label{item:E05}
+\subsubsection{Failure and correction}
+The stock Higuera--Cary magnetic rotation forms its coefficient from
+\code{part_q * dt / part_m} and the interpolated magnetic field. The
+interpolation weights need the same normalisation used by the other
+particle push; without it, the rotation uses the wrong field scale.
+The fork fix across all three dimensions \forkcommit{d86ceceab} instead uses
+\code{ccmratio}, which includes that factor. An isolated variant based
+on official \code{4.21-devel} is \forkcommit{2684956bf}.
+
+\subsubsection{Official status and test}
+The corrected expression is absent from the checked official
+\code{main} source. A suitable regression is a crossed-field
+single-particle push with Higuera--Cary enabled, compared against a
+known analytic or independently integrated trajectory across particle
+shape choices. The source review here does not replace that runtime
+test on an official build.
+
+\subsection{E06: Trident event despite \code{produce_pairs = F}}
+\label{item:E06}
+\textbf{Trigger and failure.} With \code{TRIDENT_PHOTONS} compiled and
+pair production disabled in the deck, the electron loop could still
+decrement trident optical depth and create a pair. If no trident pair
+species had been designated, the event could access species index
+\code{-1} and crash.
+
+\textbf{Correction and status.} \forkcommit{1a88d4afa} guards both
+the depth decrement and event creation with \code{produce_pairs} in
+1D, 2D and 3D. The checked official \code{main} still contains the
+unguarded trident path. A regression should compile the trident
+define, run with \code{produce_pairs = F} until a would-be event, and
+check that no pair is created and the run completes.
+
+\subsection{E07: Wrong photon-species argument in nonlinear BW}
+\label{item:E07}
+\textbf{Failure.} In the stock 2D photon loop, pair generation receives
+the global \code{photon_species} rather than the current \code{ispecies}.
+With multiple photon species this can associate a pair event with the
+wrong list and may crash. The 2D fork change
+\forkcommit{2b18ef6b4} passes \code{ispecies}; the checked official
+\code{main} retains the former argument.
+
+\textbf{Verification to record.} Use at least two photon species that
+can undergo nonlinear Breit--Wheeler conversion. Check species
+accounting and that both event paths finish without a list error.
+
+\subsection{E08: \code{identify} can replace explicit charge and mass}
+\label{item:E08}
+\textbf{Behaviour.} The stock species parser can apply
+\code{identify} after explicit \code{charge} and \code{mass} values,
+silently replacing them. This may make a deck simulate a different
+particle species than its author intended. The all-dimension fork
+commit \forkcommit{b908c8591} adds a warning for mismatched explicit
+values; it does not change the selected physics. The warning is absent
+from the checked official \code{main}. A regression should cover both
+input orders, matching and mismatching values, and each dimension.
+
+\subsection{E09: Approximate nonlinear BW tables}
+\label{item:E09}
+\textbf{Baseline.} Official 2D EPOCH reads \code{pairprod.table},
+whose nonlinear Breit--Wheeler rate uses Erber's approximate analytic
+expression. The existing \code{energy_split.table} is likewise not a
+general spin-resolved LCFA spectrum. These are established model
+choices, so this entry is labelled \textbf{Baseline}, not a software
+crash or a demonstrated upstream regression.
+
+\textbf{Fork alternative.} The 2D fork adds the numerically tabulated
+LCFA rate \code{pairprod_lcfa.table} in \forkcommit{848d21a4b}
+and the \code{pair_tables = legacy | lcfa} selector in
+\forkcommit{fd56a2e08}. With spin QED off, \code{legacy} is the default;
+with spin QED on, \code{lcfa} is the default. When spin is on,
+\code{legacy} restores the old rate only; polarisation-resolved energy
+splitting remains. The generator scripts are currently untracked in
+the local fork, so clean-checkout table regeneration remains to be
+documented before claiming a reproducible upstream proposal. Runs
+should record the selector and table hashes.
+
+\section{Fork-only features: separate from stock EPOCH defects}
+The F entries are changes to features absent from the checked
+official \code{main}. They are retained here as potentially useful
+upstream work, and are deliberately marked \textbf{N/A} rather than
+\emph{open bugs} in stock EPOCH.
+
+\subsection{Spin and pair channels}
+\ForkItem{F01}{Spin restart}
+The 2D spin branch restores stored spin state during restart
+(\forkcommit{a66b394cb}). Stock \code{main} has no corresponding
+spin-aware restart feature in this comparison.
+
+\ForkItem{F02}{Boosted pair channels}
+The fork's pair-boost work includes Breit--Wheeler boost handling
+(\forkcommit{3e9f3121f}), muon gamma sampling
+(\forkcommit{fbb9a9459}), Bethe--Heitler scaling
+(\forkcommit{92552de69}, \forkcommit{a5716caf2}) and additive
+optical depths (\forkcommit{99ce3c685}). These are distinct patches
+to the fork's boosted pair channels, not one stock-code fix.
+
+\ForkItem{F03}{Polarised NBW energy split}
+The 2D spin implementation adds parallel/perpendicular
+nonlinear Breit--Wheeler energy-split tables and final-state sampling
+(\forkcommit{dfb93b141}, \forkcommit{2b18ef6b4}). This is separate
+from the unpolarised rate alternative in E09.
+
+\ForkItem{F04}{NLCS quantile sampling}
+The 2D spin implementation adds inverse-CDF tables for
+spin-resolved nonlinear Compton photon energies, selected by
+\code{use_nlcs_quantile_tables} (\forkcommit{6610b3768}). Spin-off
+runs continue to use the legacy \code{ksi_sokolov.table} path.
+
+\ForkItem{F05}{No-transition update}
+The 2D spin implementation adds a sub-step spin/polarisation
+no-transition update (\forkcommit{944fff881}); it is not a global
+change to every EPOCH QED mode.
+
+\subsection{Radiation reaction}
+\ForkItem{F06}{Full Landau--Lifshitz and midpoint kick}
+The 2D fork adds \code{use_full_landau_lifshitz}, an alternative
+\code{gaunt_factor} fit and \code{rr_midpoint}
+(\forkcommit{dfa48930a}). The defaults retain the fork's old
+behaviour. The audited branch has no equivalent 3D implementation.
+
+\subsection{Custom-file laser injection}
+The official \code{main} tip has no custom-file laser reader. The
+\href{https://github.com/epochpic/epoch/issues/910}{upstream
+custom-profile issue \#910} is an issue, not an upstream merge.
+Consequently F07--F10 describe corrections to the fork feature.
+
+\ForkItem{F07}{Half-cell sampling}
+The 2D custom reader corrects a half-cell coordinate offset
+(\forkcommit{1b307b37d}).
+
+\subsubsection{F08: MPI file-loading deadlock}
+\label{item:F08}
+The 2D file-profile and phase-loading path could enter MPI
+operations inconsistently across ranks. \forkcommit{5a77c367b}
+makes the load collective-safe. Validation should include multiple
+ranks, profile and phase files, and a rank whose local slab has no
+requested data.
+
+\ForkItem{F09}{Per-laser file storage}
+The 2D reader stores imported profiles with each laser block, so
+two distinct lasers do not alias the same data
+(\forkcommit{945fd060d}).
+
+\ForkItem{F10}{Continuous 3D re-slabbing}
+The 3D reader reloads the spatiotemporal profile window as load
+balancing moves the domain slab (\forkcommit{f572d035c}).
