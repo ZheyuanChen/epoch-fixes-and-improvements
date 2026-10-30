@@ -1,43 +1,47 @@
-# EPOCH issue and improvement register
+# EPOCH bugs and improvements
 
-A community-editable register of bugs and incremental numerical improvements in
-[official EPOCH](https://github.com/epochpic/epoch). The official `main` branch
-is the reference point. Changes that exist only in
-[`epoch_dev`](https://github.com/ZheyuanChen/epoch_dev) are labelled explicitly.
+A shared record of bugs and small improvements in
+[official EPOCH](https://github.com/epochpic/epoch). Each entry says where
+its fix or improvement is available. Changes in a separate
+[EPOCH fork](https://github.com/ZheyuanChen/epoch_dev) are labelled as such.
 
-## Work on Overleaf
+## Use in Overleaf
 
-Upload [`epoch_fixes_overleaf.zip`](epoch_fixes_overleaf.zip) as a new Overleaf
-project and set `main.tex` as the main file. The archive contains the registry,
-detailed items and editing guide. Sharing that Overleaf project does not grant
-GitHub write access or automatically synchronise edits with this repository.
-The GitHub repository itself is public.
+Upload [`epoch_fixes_overleaf.zip`](epoch_fixes_overleaf.zip) as a new
+Overleaf project and set `main.tex` as the main file. The archive contains
+both short tables, the detailed entries and an editing guide. Sharing the
+Overleaf project does not itself grant GitHub write access or synchronise
+edits. This GitHub repository is public.
 
-To add a bug, edit one short row in `registry.tex` and a matching entry in
-`items.tex`. The table keeps descriptions brief and wraps them automatically;
-long paths, links, reproduction steps and caveats belong in the detailed item.
-See [CONTRIBUTING.md](CONTRIBUTING.md) for a copyable example.
+To add a bug, add one short `\BugRow` to `registry.tex` and a matching
+numbered entry to `items.tex`. To add an improvement, add an
+`\ImprovementRow` to `improvements_registry.tex` and a matching `I01`
+entry to `improvements.tex`. The table descriptions wrap automatically;
+keep long paths, links and tests in the detailed entries.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for examples.
 
-## Snapshot and evidence
+## Colours and check date
 
-- Official `main` checked 30 October 2026:
+- Green: fix or improvement is in official `main`.
+- Yellow: fix or improvement is in the named official development branch.
+- Purple: fix or improvement is in a separate EPOCH fork.
+- Red: no fix is known, or an improvement is unavailable.
+- Official `main` checked 30 October 2026 at
   `f294c484f76dff0777d5cc0d50b38506a2b049ff`.
-- `Fixed` requires inclusion in official `main`. A PR merged into a development
-  branch is `Dev only` until its fix reaches `main`.
-- `Open` describes a stock-code issue that remains at the checked tip.
-- `Baseline` describes an existing method with a documented alternative;
-  `N/A` identifies a correction to a feature absent from stock EPOCH.
-- This source audit does not claim new EPOCH builds or simulations. Table
-  generators currently untracked in the local fork are flagged in the item.
 
-## Files
+These are code and Git-history checks, not new EPOCH simulation results.
+The numerical NBW table generator is currently uncommitted in the local
+fork; this limitation is recorded in improvement I01.
 
-- `main.tex`: layout, status convention and registry macros.
-- `registry.tex`: short, linked rows; the easiest file for contributors to edit.
-- `items.tex`: sources, symptoms, fixes, tests and limitations.
-- `CONTRIBUTING.md`: editing and status-update instructions.
-- `package.py`: regenerates the Overleaf zip from these sources.
-- `epoch_fixes_preview.pdf`: a compiled preview.
+## Files and local build
 
-Run `python3 package.py` after editing the source files. The Overleaf zip
-contains no Git history, EPOCH source code, manuscripts or local machine notes.
+- `main.tex`: page layout and coloured status flags.
+- `registry.tex`, `items.tex`: short bug list and detailed bugs.
+- `improvements_registry.tex`, `improvements.tex`: improvement list and details.
+- `CONTRIBUTING.md`: copyable editing examples.
+- `package.py`: checks that all table IDs have details, then builds the zip.
+- `epoch_fixes_preview.pdf`: compiled preview.
+
+After editing locally, compile `main.tex` with pdfLaTeX twice and run
+`python3 package.py`. The zip contains no Git history, EPOCH source code,
+manuscripts or local machine notes.

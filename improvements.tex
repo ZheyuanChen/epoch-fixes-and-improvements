@@ -1,0 +1,55 @@
+\subsection*{I01. Numerical nonlinear Breit--Wheeler rate table}
+\phantomsection\label{imp:I01}
+Nonlinear Breit--Wheeler (NBW) pair creation is the conversion of a
+high-energy photon into an electron--positron pair in a strong
+electromagnetic field. Official 2D EPOCH uses an approximate
+analytical rate in \code{pairprod.table}. The 2D
+\href{https://github.com/ZheyuanChen/epoch_dev}{fork} adds a
+numerical table for the locally constant field approximation
+(LCFA), \code{pairprod_lcfa.table}
+(\forkcommit{848d21a4b}), selected through
+\code{pair_tables = lcfa} (\forkcommit{fd56a2e08}).
+The old method remains available as \code{legacy}.
+This is an improvement candidate, not a claim that the old
+method is a coding error. It can change simulation results,
+so record the chosen table and its hash. The local table
+generator is currently not committed to the fork; clean
+regeneration should be documented before proposing this
+for official EPOCH.
+
+\subsection*{I02. Polarisation-resolved pair energies}
+\phantomsection\label{imp:I02}
+The fork's 2D spin feature adds two tables for the energy
+shared between a pair, depending on photon polarisation
+(\forkcommit{dfb93b141}, \forkcommit{2b18ef6b4}).
+The checked official \code{main} does not contain that spin
+feature. With spin enabled in the fork,
+\code{pair_tables = legacy} restores only the old
+\emph{rate}; the polarisation-resolved energy split remains.
+
+\subsection*{I03. Spin-resolved photon-energy sampling}
+\phantomsection\label{imp:I03}
+The fork adds tables that sample nonlinear Compton photon
+energies more accurately when spin is tracked in 2D
+(\forkcommit{6610b3768}). The switch is
+\code{use_nlcs_quantile_tables}. Runs without the fork's
+spin feature continue to use EPOCH's older sampling table.
+This change is absent from the checked official \code{main}.
+
+\subsection*{I04. Sub-step spin and polarisation update}
+\phantomsection\label{imp:I04}
+The fork's 2D spin model updates spin and photon
+polarisation within a simulation time step, including
+steps without an emission event (\forkcommit{944fff881}).
+This is not a change to every EPOCH emission mode,
+and it is absent from the checked official \code{main}.
+
+\subsection*{I05. Fuller radiation-reaction model and time step}
+\phantomsection\label{imp:I05}
+The 2D fork adds optional terms of the full
+Landau--Lifshitz radiation-reaction force, another
+Gaunt-factor fit, and a midpoint time step for the
+radiation-reaction force (\forkcommit{dfa48930a}).
+The old options remain the defaults. These additions
+are not in the checked official \code{main}; the
+audited fork branch has no equivalent 3D version.

@@ -1,56 +1,68 @@
-# Contributing an EPOCH issue
+# Add an EPOCH bug or improvement
 
-Please check the official [`epochpic/epoch` `main`](https://github.com/epochpic/epoch)
-branch before adding or changing a status. Record the commit and date used.
-An item about a feature implemented only in another fork belongs in the
-fork-specific group and must say so explicitly.
+Keep each table row short. Put the explanation, sources and test in its
+detailed entry. Check the official
+[EPOCH `main`](https://github.com/epochpic/epoch) branch before changing a
+flag, and record the branch and date you checked.
 
-## Add a row and its detail
+## Add a bug
 
-1. Choose the next unused `E` ID for stock EPOCH or `F` ID for a fork-only
-   feature. Copy a single row in `registry.tex`, for example:
-
-```tex
-\RegistryRow{E10}{Short description of the new issue}{Open}
-```
-
-2. Add a matching detail in `items.tex`:
+1. Choose the next unused **number**. Add a row in `registry.tex`:
 
 ```tex
-\subsection{E10: Short description of the new issue}
-\label{item:E10}
-\textbf{Trigger and failure.} State the smallest failing configuration.
-
-\textbf{Status and evidence.} Link the official commit, PR or issue;
-give the main tip checked and any fork-only correction.
-
-\textbf{Verification.} Record a reproducible test and its result.
+\BugRow{15}{Short description of the bug}{\NoFix}
 ```
 
-For a short fork-only entry, use `\ForkItem{F11}{Short title}` in `items.tex`
-and add an `F11` row in `registry.tex`. Use subsections and subsubsections
-for serious failures. Keep the registry row short; detailed URLs and paths
-belong only in the item, so the table does not overflow.
+2. Add a matching entry in `items.tex`:
 
-## Status values
+```tex
+\subsection*{15. Short description of the bug}
+\phantomsection\label{bug:15}
+\textbf{When it happens.} Give the smallest failing case.
 
-| Value | Meaning |
+\textbf{Fix.} Link the commit or PR and name its branch.
+
+\textbf{Test.} State how to reproduce and check the result.
+```
+
+For a serious bug, add `\subsubsection{...}` headings inside its
+numbered entry. Use these coloured flags in the bug table:
+
+| Flag | Meaning |
 | --- | --- |
-| `Fixed` | The correction is present in official `main`. |
-| `Dev only` | The correction is in an official development branch, but absent from `main`. |
-| `Open` | A stock-code defect or hazardous behaviour remains in `main`. |
-| `Baseline` | Stock EPOCH intentionally uses an existing method; an improvement is documented. |
-| `N/A` | The affected feature is absent from stock `main`; this is fork-specific work. |
+| `\FixMain` | Green: the fix is in official `main`. |
+| `\FixDevel{4.20-devel}` | Yellow: the fix is in the named official development branch, but not `main`. Use the actual branch name. |
+| `\FixFork` | Purple: the fix is in a separate EPOCH fork. Name and link it in the detail. |
+| `\NoFix` | Red: no fix is known. |
 
-Do not infer `Fixed` from a merged PR badge without checking its target branch
-and whether that commit reached `main`. Prefer a direct reproducer or
-source-level explanation over an unsupported claim of numerical impact.
+## Add an improvement
 
-## Build
+Choose the next unused **I** number. Add a short row to
+`improvements_registry.tex` and a matching entry to `improvements.tex`:
 
-Overleaf compiles `main.tex` with pdfLaTeX. In a local checkout of this
-GitHub repository, run pdfLaTeX twice from the repository root, then run
-`python3 package.py` to update the zip.
-Commit the changed `.tex` files, zip and preview together if you maintain
-those generated artefacts in GitHub. Overleaf edits do not update GitHub
-unless you separately synchronise or upload them.
+```tex
+\ImprovementRow{I06}{Short description of the improvement}{\InFork}
+
+\subsection*{I06. Short description of the improvement}
+\phantomsection\label{imp:I06}
+Explain the method, where it is available, and how it was checked.
+```
+
+The improvement table uses `\InMain` (green),
+`\InDevel{4.20-devel}` (yellow), `\InFork` (purple), or
+`\NotAvailable` (red). Keep claims about performance or accuracy
+next to a test or source. An improvement that changes numerical results
+should name the option and data files a user must record.
+
+## Keep the status honest
+
+A PR merged into an official development branch is yellow until the
+change reaches official `main`. A fix in a fork is purple even if the
+same bug is present in official EPOCH. For a feature that exists only
+in a fork, say this explicitly in the detailed entry. Check the
+official branch tip again when changing a flag.
+
+Overleaf compiles `main.tex` with pdfLaTeX. In a local checkout of
+this GitHub repository, run pdfLaTeX twice, then run
+`python3 package.py` to update the zip. Overleaf edits do not update
+GitHub unless you separately synchronise or upload them.

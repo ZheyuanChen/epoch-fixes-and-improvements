@@ -1,5 +1,5 @@
 \documentclass[10pt,a4paper]{article}
-\usepackage[margin=22mm]{geometry}
+\usepackage[margin=19mm]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern,microtype}
@@ -10,56 +10,69 @@
   colorlinks=true,
   linkcolor=blue!45!black,
   urlcolor=blue!45!black,
-  pdftitle={EPOCH issue and improvement register}
+  pdftitle={EPOCH bugs and improvements}
 }
 \setlength{\parindent}{0pt}
-\setlength{\parskip}{4pt}
+\setlength{\parskip}{2pt}
 \newcommand{\code}[1]{\texttt{\detokenize{#1}}}
 \newcommand{\upcommit}[1]{\href{https://github.com/epochpic/epoch/commit/#1}{\texttt{#1}}}
 \newcommand{\forkcommit}[1]{\href{https://github.com/ZheyuanChen/epoch_dev/commit/#1}{\texttt{#1}}}
 \newcommand{\pr}[1]{\href{https://github.com/epochpic/epoch/pull/#1}{PR~\##1}}
 \newcommand{\issue}[1]{\href{https://github.com/epochpic/epoch/issues/#1}{issue~\##1}}
-% Add one short row in registry.tex, then a matching label in items.tex.
-\newcommand{\RegistryRow}[3]{\hyperref[item:#1]{\textbf{#1}} & #2 & #3\\}
-\newcommand{\ForkItem}[2]{\par\medskip\phantomsection\label{item:#1}\textbf{#1: #2.}\quad}
-\title{EPOCH issue and improvement register}
+% Short coloured flags; the official development branch name is an argument.
+\newcommand{\Badge}[3]{\begingroup\fboxsep=2pt%
+  \colorbox{#1}{\textcolor{#2}{\strut\bfseries #3}}\endgroup}
+\newcommand{\FixMain}{\Badge{green!15}{green!40!black}{Fix: main}}
+\newcommand{\FixDevel}[1]{\Badge{yellow!35}{orange!55!black}{Fix: #1}}
+\newcommand{\FixFork}{\Badge{purple!14}{purple!65!black}{Fix: fork}}
+\newcommand{\NoFix}{\Badge{red!14}{red!65!black}{Not fixed}}
+\newcommand{\InMain}{\Badge{green!15}{green!40!black}{Main}}
+\newcommand{\InDevel}[1]{\Badge{yellow!35}{orange!55!black}{#1}}
+\newcommand{\InFork}{\Badge{purple!14}{purple!65!black}{Fork}}
+\newcommand{\NotAvailable}{\Badge{red!14}{red!65!black}{Not available}}
+% The number or I-ID links to its detailed entry.
+\newcommand{\BugRow}[3]{\hyperref[bug:#1]{\textbf{#1}} & #2 & #3\\}
+\newcommand{\ImprovementRow}[3]{\hyperref[imp:#1]{\textbf{#1}} & #2 & #3\\}
+
+\title{EPOCH bugs and improvements}
 \author{Contributors to this register}
-\date{Official \code{main} status checked 30 October 2026}
+\date{Official \code{main} checked 30 October 2026}
 \begin{document}
 \maketitle
 
-\section{Purpose and status convention}
-This is a shared register of EPOCH bugs and incremental improvements. It starts
-with the official \href{https://github.com/epochpic/epoch}{EPOCH} source and
-records whether each change is in official \code{main}. Contributors are welcome to add independently verified
-issues from any part of EPOCH.
+\section{How to read this document}
+This is a shared list of bugs and small improvements to
+\href{https://github.com/epochpic/epoch}{EPOCH}. The official
+\code{main} branch is the reference point. For bugs, the colour shows
+where a fix is available: \FixMain\ in official \code{main},
+\FixDevel{4.20-devel}\ in an official development branch,
+\FixFork\ in a separate copy of EPOCH, or \NoFix\ if no fix is known.
+The yellow flag can name any official development branch. A purple
+flag does not mean the fix has reached official EPOCH.
 
-The official \code{main} tip checked here is
-\upcommit{f294c484f76dff0777d5cc0d50b38506a2b049ff}. The statuses mean:
-\textbf{Fixed}---the correction is in that \code{main} history;
-\textbf{Dev only}---it is in an official development branch but not
-\code{main}; \textbf{Open}---the stated stock-code behaviour remains in
-\code{main}; \textbf{Baseline}---an existing method works as designed but
-has a documented alternative; \textbf{N/A}---the affected feature exists
-only in the fork, so this is not a stock EPOCH bug. Statuses are source
-assessments at the stated commit, not fresh simulation results.
+For improvements, the colour shows where the improvement is available:
+\InMain, \InDevel{4.20-devel}, \InFork, or \NotAvailable.
+The branch checked for this edition of the register is
+\href{https://github.com/epochpic/epoch/commit/f294c484f76dff0777d5cc0d50b38506a2b049ff}{\texttt{f294c484f}}.
+The tables are short; click an ID for the explanation and source links.
+These checks compare EPOCH files and commit records. They are not
+new EPOCH runs.
 
-\section{Registry}
-The linked ID opens the detailed entry. E IDs describe stock EPOCH; F IDs
-mark fork-only features. To add an item, copy one
-\code{\RegistryRow} line in \code{registry.tex} and add a matching labelled
-entry in \code{items.tex}; the title column wraps automatically.
+\section{Bugs}
+\subsection*{Bug list}
+Bug IDs are numbers. Keep each description short; the middle column
+wraps when needed. Long paths and test results belong below the table.
 
 {\small
 \setlength{\tabcolsep}{4pt}
 \renewcommand{\arraystretch}{1.12}
-\begin{longtable}{@{}p{0.08\linewidth}>{\raggedright\arraybackslash}p{0.72\linewidth}p{0.13\linewidth}@{}}
+\begin{longtable}{@{}p{0.06\linewidth}>{\raggedright\arraybackslash}p{0.64\linewidth}p{0.23\linewidth}@{}}
 \toprule
-ID & Short description & Main status\\
+ID & Bug & Fix status\\
 \midrule
 \endfirsthead
 \toprule
-ID & Short description & Main status\\
+ID & Bug & Fix status\\
 \midrule
 \endhead
 \bottomrule
@@ -70,14 +83,37 @@ ID & Short description & Main status\\
 
 \input{items.tex}
 
-\section{Adding and updating entries}
-Use the short table row for discovery, and keep reproduction steps, source
-paths, links, affected dimensions and validation in the corresponding
-detailed item. For a serious defect, use a \code{\subsection} and, if useful,
-\code{\subsubsection} headings. Give fork-specific additions an F ID and
-state which feature is absent from stock EPOCH. Do not mark an item
-\textbf{Fixed} merely because a PR was merged to a development branch.
-Record the official \code{main} commit and check date whenever a status
-changes. A copyable example and the build instructions are in
-\code{CONTRIBUTING.md}.
+\section{Improvements}
+\subsection*{Improvement list}
+These entries describe changes to a method or feature. The last
+column shows where each improvement is available; it does not claim
+that a missing improvement is a bug.
+
+{\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{longtable}{@{}p{0.08\linewidth}>{\raggedright\arraybackslash}p{0.62\linewidth}p{0.23\linewidth}@{}}
+\toprule
+ID & Improvement & Available in\\
+\midrule
+\endfirsthead
+\toprule
+ID & Improvement & Available in\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\input{improvements_registry.tex}
+\end{longtable}
+}
+
+\input{improvements.tex}
+
+\section{Adding an entry}
+Add one short row to \code{registry.tex} or
+\code{improvements_registry.tex}, then add a matching entry to
+\code{items.tex} or \code{improvements.tex}. Use a subsection for a
+serious bug and smaller headings for the failure, fix and test.
+Record the official branch checked and the date when changing a flag.
+The copyable examples are in \code{CONTRIBUTING.md}.
 \end{document}
