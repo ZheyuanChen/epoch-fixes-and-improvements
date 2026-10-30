@@ -57,10 +57,12 @@ used elsewhere in the push. In the checked official \code{main},
 that factor is missing from this rotation.
 
 \subsubsection*{Fix and test}
-The fork fix \forkcommit{d86ceceab} changes the calculation in
-1D, 2D and 3D. A separate branch based on official
-\code{4.21-devel} contains \forkcommit{2684956bf}.
-Neither change is in official \code{main}. A useful test is a
+Zheyuan Chen's fix \upcommit{2684956bf} changes the calculation in
+1D, 2D and 3D. Tom Goffrey merged it into official
+\code{4.21-devel} through \pr{925} on 6 October 2026
+(merge \upcommit{2b55e10cf}). The same correction was also made in
+the fork as \forkcommit{d86ceceab}. It is absent from the checked
+official \code{main}. A useful test is a
 single particle in crossed fields, compared with an independent
 trajectory, for several particle shapes. This document checks
 the source; it does not rerun that test on the official build.
@@ -81,16 +83,6 @@ The checked official \code{main} still has the unguarded path.
 A test should run past a would-be event with pairs disabled and
 confirm that the run completes without creating a pair.
 
-\subsection*{7. Wrong photon species in nonlinear pair creation}
-\phantomsection\label{bug:7}
-The 2D photon loop in the checked official \code{main} passes
-\code{photon_species} to pair creation instead of the species
-currently being processed, \code{ispecies}. With more than one
-photon species, this can use the wrong particle list and may
-crash. The 2D fork fix \forkcommit{2b18ef6b4} passes
-\code{ispecies}. A test needs at least two photon species
-that can create nonlinear Breit--Wheeler pairs.
-
 \subsection*{8. \code{identify} silently replaces charge or mass}
 \phantomsection\label{bug:8}
 In an EPOCH species block, \code{identify} can replace an
@@ -101,59 +93,3 @@ adds a warning in all three dimensions. It does not change
 which properties EPOCH uses. The warning is absent from the
 checked official \code{main}. Tests should cover both input
 orders and both matching and mismatching values.
-
-\subsection*{9. Spin state lost on restart in the fork}
-\phantomsection\label{bug:9}
-This affects the fork's 2D spin feature; the feature is not in
-the checked official \code{main}. The fork fix
-\forkcommit{a66b394cb} restores stored spin state on restart.
-A test should compare a continuous run with a restarted run.
-
-\subsection*{10. Boosted pair-channel errors in the fork}
-\phantomsection\label{bug:10}
-This entry groups related fixes to pair-boost features absent
-from the checked official \code{main}. They are separate code
-changes: Breit--Wheeler boost handling
-(\forkcommit{3e9f3121f}), muon gamma sampling
-(\forkcommit{fbb9a9459}), Bethe--Heitler scaling
-(\forkcommit{92552de69}, \forkcommit{a5716caf2}), and
-additive event counters (\forkcommit{99ce3c685}).
-Review and test each change separately before proposing it
-for official EPOCH.
-
-\subsection*{11. Half-cell offset in the fork's custom-laser reader}
-\phantomsection\label{bug:11}
-The fork's 2D file-based laser reader could sample a profile
-half a cell away from the intended point. The correction is
-\forkcommit{1b307b37d}. The checked official \code{main}
-does not have this reader.
-
-\subsection*{12. MPI deadlock in the fork's custom-laser reader}
-\phantomsection\label{bug:12}
-\subsubsection*{Problem and fix}
-Ranks could take different paths while loading profile and
-phase files, leaving some ranks waiting. The 2D fork fix is
-\forkcommit{5a77c367b}. This concerns a reader absent
-from the checked official \code{main}.
-
-\subsubsection*{Test to keep}
-Load both profile and phase files on multiple ranks, including
-a rank with no requested local data. All ranks should finish
-and the injected field should match the supplied data.
-
-\subsection*{13. Two custom lasers sharing file data in the fork}
-\phantomsection\label{bug:13}
-The 2D fork reader could let one laser block use another
-block's imported profile. \forkcommit{945fd060d} stores the
-data with each laser block. The reader is absent from the
-checked official \code{main}. A test should load two
-different profiles on the same boundary and check both fields.
-
-\subsection*{14. Stale 3D custom-laser profile after load balancing}
-\phantomsection\label{bug:14}
-In the fork's 3D reader, the loaded profile window needed to
-follow changes to the domain split. \forkcommit{f572d035c}
-reloads the relevant profile portion as the split moves.
-The reader is absent from the checked official \code{main}.
-A test should compare the injected field before and after
-a load-balancing change.

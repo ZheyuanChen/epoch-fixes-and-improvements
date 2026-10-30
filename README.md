@@ -1,9 +1,11 @@
 # EPOCH bugs and improvements
 
-A shared record of bugs and small improvements in
-[official EPOCH](https://github.com/epochpic/epoch). Each entry says where
-its fix or improvement is available. Changes in a separate
-[EPOCH fork](https://github.com/ZheyuanChen/epoch_dev) are labelled as such.
+A shared record of bugs in [official EPOCH](https://github.com/epochpic/epoch)
+and improvements that contributors may propose for it. Each entry says
+where its fix or improvement is available. Bugs in features absent from
+official EPOCH do not belong in the bug list. Changes available in the
+separate [epoch_dev fork](https://github.com/ZheyuanChen/epoch_dev) are
+labelled and linked as such.
 
 ## Use in Overleaf
 
@@ -16,7 +18,8 @@ edits. This GitHub repository is public.
 To add a bug, add one short `\BugRow` to `registry.tex` and a matching
 numbered entry to `items.tex`. To add an improvement, add an
 `\ImprovementRow` to `improvements_registry.tex` and a matching `I01`
-entry to `improvements.tex`. The table descriptions wrap automatically;
+entry to `improvements.tex`. The tables credit the authors of the cited
+fix or addition. Descriptions wrap automatically;
 keep long paths, links and tests in the detailed entries.
 See [CONTRIBUTING.md](CONTRIBUTING.md) for examples.
 
@@ -24,7 +27,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for examples.
 
 - Green: fix or improvement is in official `main`.
 - Yellow: fix or improvement is in the named official development branch.
-- Purple: fix or improvement is in a separate EPOCH fork.
+- Purple: fix or improvement is in the linked `epoch_dev` fork.
 - Red: no fix is known, or an improvement is unavailable.
 - Official `main` checked 30 October 2026 at
   `f294c484f76dff0777d5cc0d50b38506a2b049ff`.

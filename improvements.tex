@@ -17,33 +17,6 @@ generator is currently not committed to the fork; clean
 regeneration should be documented before proposing this
 for official EPOCH.
 
-\subsection*{I02. Polarisation-resolved pair energies}
-\phantomsection\label{imp:I02}
-The fork's 2D spin feature adds two tables for the energy
-shared between a pair, depending on photon polarisation
-(\forkcommit{dfb93b141}, \forkcommit{2b18ef6b4}).
-The checked official \code{main} does not contain that spin
-feature. With spin enabled in the fork,
-\code{pair_tables = legacy} restores only the old
-\emph{rate}; the polarisation-resolved energy split remains.
-
-\subsection*{I03. Spin-resolved photon-energy sampling}
-\phantomsection\label{imp:I03}
-The fork adds tables that sample nonlinear Compton photon
-energies more accurately when spin is tracked in 2D
-(\forkcommit{6610b3768}). The switch is
-\code{use_nlcs_quantile_tables}. Runs without the fork's
-spin feature continue to use EPOCH's older sampling table.
-This change is absent from the checked official \code{main}.
-
-\subsection*{I04. Sub-step spin and polarisation update}
-\phantomsection\label{imp:I04}
-The fork's 2D spin model updates spin and photon
-polarisation within a simulation time step, including
-steps without an emission event (\forkcommit{944fff881}).
-This is not a change to every EPOCH emission mode,
-and it is absent from the checked official \code{main}.
-
 \subsection*{I05. Fuller radiation-reaction model and time step}
 \phantomsection\label{imp:I05}
 The 2D fork adds optional terms of the full
@@ -53,3 +26,31 @@ radiation-reaction force (\forkcommit{dfa48930a}).
 The old options remain the defaults. These additions
 are not in the checked official \code{main}; the
 audited fork branch has no equivalent 3D version.
+
+\subsection*{I06. Laser profiles and phases from data files}
+\phantomsection\label{imp:I06}
+Zheyuan Chen's \href{https://github.com/ZheyuanChen/epoch_dev}{fork}
+can read a laser's spatial or time-dependent profile from a data
+file in 2D and 3D (\forkcommit{438424c31}). The laser block accepts
+\code{use_custom_profile} and \code{profile_data_file}; the
+file-based phase option uses \code{use_phase_from_file} and
+\code{phase_data_file}. The implementation also supports separate
+data for more than one laser. This feature is absent from the
+checked official \code{main}. A portable example should supply
+the data file, its format and grid convention, and a reference
+field trace; a multi-rank test should also check file loading.
+
+\subsection*{I07. Spin and photon polarisation}
+\phantomsection\label{imp:I07}
+The fork's \href{https://github.com/ZheyuanChen/epoch_dev/tree/spin}{\code{spin}}
+branch adds particle spin and photon polarisation tracking,
+with spin-dependent strong-field QED processes in 2D. Zheyuan
+Chen began this work by adapting Holger Schmitz's spin-precession
+code (\forkcommit{ea37e1a6d}); subsequent fork work adds
+spin-dependent emission and pair production
+(\forkcommit{773c614c3}, \forkcommit{2b18ef6b4}).
+The checked official \code{main} has no equivalent spin model.
+The 3D spin/QED port in the fork should be treated as
+experimental until its validation is documented. This entry
+describes the feature as a whole; it is not a registry of
+bugs found only within that feature.

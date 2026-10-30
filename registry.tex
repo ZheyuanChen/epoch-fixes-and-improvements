@@ -1,15 +1,9 @@
-% Bugs only. Use a number, a short description, and one coloured fix flag.
-\BugRow{1}{Laser absorption diagnostic at maximum boundaries}{\FixMain}
-\BugRow{2}{2D linear Breit--Wheeler selects the wrong species}{\FixMain}
-\BugRow{3}{Photon probes can deadlock with particle IDs}{\FixDevel{4.20-devel}}
-\BugRow{4}{Particle IDs can be reused after restart or file loading}{\FixFork}
-\BugRow{5}{Higuera--Cary particle push uses the wrong field scale}{\FixFork}
-\BugRow{6}{Trident can produce pairs when pair production is disabled}{\FixFork}
-\BugRow{7}{Pair creation can use the wrong photon species}{\FixFork}
-\BugRow{8}{\code{identify} can silently replace charge or mass}{\FixFork}
-\BugRow{9}{Spin state can be lost on restart in the fork}{\FixFork}
-\BugRow{10}{Boosted pair channels have sampling and scaling errors in the fork}{\FixFork}
-\BugRow{11}{Custom-laser reader samples half a cell away in the fork}{\FixFork}
-\BugRow{12}{Custom-laser file loading can deadlock across MPI ranks in the fork}{\FixFork}
-\BugRow{13}{Two custom lasers can share the wrong file data in the fork}{\FixFork}
-\BugRow{14}{3D custom-laser profile can become stale after load balancing}{\FixFork}
+% Bugs only. Use a number, a short description, a fix flag, and credited author(s).
+% Retired IDs stay unused so existing links retain their meaning.
+\BugRow{1}{Laser absorption diagnostic at maximum boundaries}{\FixMain}{Tom Goffrey}
+\BugRow{2}{2D linear Breit--Wheeler selects the wrong species}{\FixMain}{Tom Goffrey}
+\BugRow{3}{Photon probes can deadlock with particle IDs}{\FixDevel{4.20-devel}}{Tom Goffrey}
+\BugRow{4}{Particle IDs can be reused after restart or file loading}{\FixFork}{Zheyuan Chen}
+\BugRow{5}{Higuera--Cary particle push uses the wrong field scale}{\FixDevel{4.21-devel}}{Zheyuan Chen}
+\BugRow{6}{Trident can produce pairs when pair production is disabled}{\FixFork}{Zheyuan Chen}
+\BugRow{8}{\code{identify} can silently replace charge or mass}{\FixFork}{Zheyuan Chen}
